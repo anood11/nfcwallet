@@ -13,7 +13,8 @@ signals:
     
 public slots:
     QString login(QString login);
-    
+    QString generatePassword();
+    QString generateUUID();
 };
 
 #endif // NFCKEYWALLET_H
