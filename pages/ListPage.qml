@@ -4,53 +4,17 @@ Page {
 
     ListModel {
         id: listModel
-
-/*
-        ListElement {
-            uuid: nfc.generateUUID()
-            url: "http://www.icabanken.se"
-            iconUrl: "http://www.google.com/s2/favicons?domain=www.icabanken.se"
-            name: "Ica kort"
-            login: "vafan"
-            password: "1234"
-            group: "Banks"
-            deleted: false
-        }
-        ListElement {
-            uuid: nfc.generateUUID()
-            url: "http://www.icabanken.se"
-            iconUrl: "http://www.fvicon.com/http://www.icabanken.se"
-            name: "Ica banken"
-            login: "192001010101"
-            password: "1234"
-            group: "Banks"
-            deleted: false
-        }
-        ListElement {
-            uuid: nfc.generateUUID()
-            url: "http://www.coop.se"
-            iconUrl: "http://www.google.com/s2/favicons?domain=www.coop.se"
-            name: "Coop"
-            login: "192001010101"
-            password: "1234"
-            group: "Banks"
-            deleted: false
-        }
-        ListElement {
-            uuid: nfc.generateUUID()
-            name: "Swedbank"
-            url: "http://www.swedbank.se"
-            iconUrl: "http://www.fvicon.com/http://www.swedbank.se"
-            login: "192001010101"
-            password: "1234"
-            group: "Bar"
-            deleted: true
-        }
-        */
     }
     Component.onCompleted:
     {
-        listModel.append({"iconUrl" : "http://www.google.com/s2/favicons?domain=www.icabanken.se", "uuid" : nfc.generateUUID(), "name" : "Ica kort","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword() })
+        listModel.append({"iconUrl" : "http://www.google.com/s2/favicons?domain=www.icabanken.se", "uuid" : nfc.generateUUID(), "name" : "Ica kort","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Bank", "deleted" : false })
+        listModel.append({"iconUrl" : "http://www.google.com/s2/favicons?domain=www.coop.se", "uuid" : nfc.generateUUID(), "name" : "Coop Kort","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Bank", "deleted" : false })
+        listModel.append({"iconUrl" : "http://www.google.com/s2/favicons?domain=www.facebook.com", "uuid" : nfc.generateUUID(), "name" : "Facebook","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Social media", "deleted" : false })
+        listModel.append({"iconUrl" : "http://twitter.com/favicon.ico", "uuid" : nfc.generateUUID(), "name" : "Twitter","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Social media", "deleted" : false })
+        listModel.append({"iconUrl" : "http://ssl.gstatic.com/s2/oz/images/faviconr3.ico", "uuid" : nfc.generateUUID(), "name" : "Google+","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Social media", "deleted" : false })
+        listModel.append({"iconUrl" : "http://talk.maemo.org/favicon.ico", "uuid" : nfc.generateUUID(), "name" : "Maemo","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Linux community", "deleted" : false })
+        listModel.append({"iconUrl" : "http://merproject.org/images/mer-logo.png", "uuid" : nfc.generateUUID(), "name" : "Merproject","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Linux community", "deleted" : false })
+        listModel.append({"iconUrl" : "http://www.jolla.com/favicon.ico", "uuid" : nfc.generateUUID(), "name" : "Jolla","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Companys", "deleted" : false })
     }
     SilicaListView {
         id: listView
@@ -81,7 +45,7 @@ Page {
 
         header: PageHeader { title: "Nfc Key Wallet" }
         section {
-            property: 'group'
+            property: 'category'
             delegate: SectionHeader {
                 text: section
             }
@@ -117,19 +81,6 @@ Page {
                     rightMargin: theme.paddingLarge
                 }
                 color: parent.down ? theme.highlightColor : theme.primaryColor
-                MouseArea{
-                    anchors.fill: parent
-                    onClicked: { if (main.uuid==model.uuid)
-                                {
-                                    main.uuid=""
-                         //           columns.state=''
-                                }
-                                else {
-                                    main.uuid=model.uuid
-//                                    columns.state='Details'
-                                }
-                        }
-                }
             }
             Item {
                 id: columns
@@ -168,6 +119,7 @@ Page {
                     color: theme.primaryColor
                   //  anchors.verticalCenter: parent.verticalCenter
                 }
+
                 states: [
                     State {
                         name: "Details"
@@ -195,6 +147,19 @@ Page {
                 }
                 height: 2
                 color: "black"
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    if (main.uuid==model.uuid)
+                    {
+                        main.uuid=""
+                    }
+                    else {
+                        main.uuid=model.uuid
+                    }
+                 }
+                onPressAndHold: pageStack.push(Qt.resolvedUrl("EditPage.qml"))
             }
         }
         VerticalScrollDecorator {}
