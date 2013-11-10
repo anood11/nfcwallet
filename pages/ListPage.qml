@@ -1,21 +1,14 @@
 import QtQuick 1.1
 import Sailfish.Silica 1.0
+import "../scripts/key_wallet.js" as Remote
 Page {
 
     ListModel {
         id: listModel
     }
-    Component.onCompleted:
-    {
-        listModel.append({"iconUrl" : "http://www.google.com/s2/favicons?domain=www.icabanken.se", "uuid" : nfc.generateUUID(), "name" : "Ica kort","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Bank", "deleted" : false })
-        listModel.append({"iconUrl" : "http://www.google.com/s2/favicons?domain=www.coop.se", "uuid" : nfc.generateUUID(), "name" : "Coop Kort","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Bank", "deleted" : false })
-        listModel.append({"iconUrl" : "http://www.google.com/s2/favicons?domain=www.facebook.com", "uuid" : nfc.generateUUID(), "name" : "Facebook","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Social media", "deleted" : false })
-        listModel.append({"iconUrl" : "http://twitter.com/favicon.ico", "uuid" : nfc.generateUUID(), "name" : "Twitter","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Social media", "deleted" : false })
-        listModel.append({"iconUrl" : "http://ssl.gstatic.com/s2/oz/images/faviconr3.ico", "uuid" : nfc.generateUUID(), "name" : "Google+","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Social media", "deleted" : false })
-        listModel.append({"iconUrl" : "http://talk.maemo.org/favicon.ico", "uuid" : nfc.generateUUID(), "name" : "Maemo","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Linux community", "deleted" : false })
-        listModel.append({"iconUrl" : "http://merproject.org/images/mer-logo.png", "uuid" : nfc.generateUUID(), "name" : "Merproject","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Linux community", "deleted" : false })
-        listModel.append({"iconUrl" : "http://www.jolla.com/favicon.ico", "uuid" : nfc.generateUUID(), "name" : "Jolla","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Companys", "deleted" : false })
-    }
+
+    Component.onCompleted: Remote.wallet_get()
+
     SilicaListView {
         id: listView
 
@@ -69,7 +62,7 @@ Page {
             }
             Label {
                 id: title
-                text: model.name
+                text: model.title
                 font.pixelSize: theme.fontSizeLarge
                 font.family: theme.fontFamilyHeading
 

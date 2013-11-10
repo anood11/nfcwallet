@@ -4,15 +4,17 @@ TARGET = nfckeywallet
 # C++ sources
 SOURCES += main.cpp \
     nfckeywallet.cpp \
-    requesticon.cpp
+    requesticon.cpp \
+    pgp_manager.cpp
 
 # C++ headers
 HEADERS += \
     nfckeywallet.h \
-    requesticon.h
+    requesticon.h \
+    pgp_manager.h
 
 # QML files and folders
-qml.files = *.qml pages cover main.qml
+qml.files = *.qml *.js scripts pages cover main.qml
 images.files=images
 
 # The .desktop file
@@ -24,7 +26,8 @@ include(sailfishapplication/sailfishapplication.pri)
 images.path=$$DEPLOYMENT_PATH/
 
 OTHER_FILES = rpm/nfckeywallet.yaml \
-    images/nfckeyring.png
+    images/nfckeyring.png \
+    scripts/key_wallet.js
 
 RESOURCES += \
     qrc.qrc

@@ -14,8 +14,12 @@ Page {
                 text: "About Nfc Key Wallet"
                 onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
             }
+            MenuItem{
+                text: "Generate a PGP Key"
+                onClicked: pageStack.push(Qt.resolvedUrl("MakeGPGPage.qml"))
+            }
         }
-        
+
         // Tell SilicaFlickable the height of its content.
         contentHeight: 800
         
