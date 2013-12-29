@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "pages"
 
@@ -6,9 +6,10 @@ ApplicationWindow
 {
     id: main
     initialPage: FirstPage { }
-    property string version: "0.0.1"
+    property string appicon: "qrc:/nfckeywallet.png"
     property string uuid: ""
-    cover: Qt.resolvedUrl("cover/CoverPage.qml")
+    property int selected: -1
+    cover: undefined
 }
 
 

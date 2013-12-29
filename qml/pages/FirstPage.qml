@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 2.1
 import Sailfish.Silica 1.0
 
 Page {
@@ -33,8 +33,8 @@ Page {
             anchors.horizontalCenter: parent.horizontalCenter
             horizontalAlignment: Text.AlignHCenter
             text: "Use your<br />NFC Tag to Login"
-            color: theme.secondaryHighlightColor
-            font.pixelSize: theme.fontSizeExtraLarge
+            color: Theme.secondaryHighlightColor
+            font.pixelSize: Theme.fontSizeExtraLarge
             MouseArea
             {
                 anchors.fill: parent

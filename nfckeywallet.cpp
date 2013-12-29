@@ -1,6 +1,6 @@
 #include <QDebug>
 #include <openssl/sha.h>
-#include <uuid/uuid.h>
+#include <QUuid>
 #include "nfckeywallet.h"
 NfcKeyWallet::NfcKeyWallet(QObject *parent) :
     QObject(parent)
@@ -24,17 +24,17 @@ NfcKeyWallet::login(QString login)
 QString
 NfcKeyWallet::generatePassword()
 {
-    uuid_t uuid;
-    uuid_generate(uuid);
-    QByteArray text((char*)uuid, sizeof(uuid));
+ //   uuid_t uuid;
+//    uuid_generate(uuid);
+    QByteArray text((char*)"uuid", 4);
     return text.toBase64().left(12);
 }
 
 QString
 NfcKeyWallet::generateUUID()
 {
-    uuid_t uuid;
-    uuid_generate(uuid);
-    QByteArray text((char*)uuid, sizeof(uuid));
+//    uuid_t uuid;
+  //  uuid_generate(uuid);
+    QByteArray text((char*)"uuid", 4);
     return text.toHex();
 }

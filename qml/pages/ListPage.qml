@@ -1,12 +1,12 @@
-import QtQuick 1.1
+import QtQuick 2.1
 import Sailfish.Silica 1.0
-import "../scripts/key_wallet.js" as Remote
+import "../js/key_wallet.js" as Remote
 Page {
 
     ListModel {
         id: listModel
     }
-
+    property Item contextMenu
     Component.onCompleted: Remote.wallet_get()
 
     SilicaListView {
@@ -16,16 +16,6 @@ Page {
             MenuItem {
                 text: "About Nfc Key Wallet"
                 onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
-            }
-            MenuItem {
-                visible: main.uuid!=""
-                text: "Remove"
-                onClicked: pageStack.push(Qt.resolvedUrl("RemoveDialog.qml"))
-            }
-            MenuItem {
-                visible: main.uuid!=""
-                text: "Change"
-                onClicked: pageStack.push(Qt.resolvedUrl("EditPage.qml"))
             }
             MenuItem {
                 text: "Add"
@@ -43,6 +33,23 @@ Page {
                 text: section
             }
         }
+
+        delegate: ListDelegate { id: listViewDelegate}
+        Component {
+             id: contextMenuComponent
+             ContextMenu {
+                 MenuItem {
+                     text: qsTr("Edit")
+                     onClicked: console.log("Clicked Option 1")
+                 }
+                 MenuItem {
+                     text: qsTr("Remove")
+                     onClicked: console.log("Clicked Option 2")
+                 }
+             }
+         }
+
+        /*
         delegate: BackgroundItem {
             id: listViewDelegate
             visible: !deleted
@@ -155,6 +162,7 @@ Page {
                 onPressAndHold: pageStack.push(Qt.resolvedUrl("EditPage.qml"))
             }
         }
+        */
         VerticalScrollDecorator {}
     }
 }

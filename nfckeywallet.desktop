@@ -1,8 +1,9 @@
 [Desktop Entry]
+X-Nemo-Application-Type=silica-qt5
 Type=Application
 Name=nfckeywallet
-Icon=icon-launcher-gallery
-Exec=invoker --type=j -s /opt/sdk/bin/nfckeywallet
-Comment=Sailfish UI application
+Icon=nfckeywallet
+Exec=nfckeywallet
+X-Desktop-File-Install-Version=0.20
 
 
