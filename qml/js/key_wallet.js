@@ -1,6 +1,10 @@
 function wallet_get()
 {
     listModel.clear();
+    var text = storage.dump();
+    var jsonObject = eval('(' + text + ')');
+    loaded(jsonObject);
+    /*
     var xhr = new XMLHttpRequest();
     xhr.open("GET","http://7b4.se/nfckeywallet/items/list",true);
     xhr.onreadystatechange = function()
@@ -16,7 +20,7 @@ function wallet_get()
         }
     }
     xhr.send();
-    
+    */
 }
 
 function wallet_post(uuid, group_uuid, site, title, user_name, password)
@@ -57,10 +61,11 @@ function loaded(jsonObject)
     {
         console.log(jsonObject[index].name)
         listModel.append({
-                         "uuid" : jsonObject[index].uuid,
                          "title" : jsonObject[index].title,
-                         "login" : jsonObject[index].user_name,
+                          "url" : jsonObject[index].url,
+                         "login" : jsonObject[index].user,
                          "password" : jsonObject[index].password,
+                         "category" : jsonObject[index].category
                          });
     }
 

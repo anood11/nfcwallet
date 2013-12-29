@@ -6,6 +6,8 @@ ListItem {
     anchors.left: parent.left
     anchors.right: parent.right
     contentHeight: Theme.itemSizeSmall
+    onClicked: { console.log("index"+model.index); selected = (selected == model.index ? -1 : model.index); }
+    onPressAndHold: pageStack.push(Qt.resolvedUrl("EditPage.qml"))
 
     Label {
         id: labelTitle
@@ -14,25 +16,28 @@ ListItem {
         anchors.leftMargin: Theme.paddingMedium
         anchors.rightMargin: Theme.paddingMedium
         font.pixelSize: Theme.fontSizeLarge
-        color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+        color: index == selected ? Theme.highlightColor : Theme.primaryColor
         text: model.title
-        MouseArea {
-            anchors.fill: parent
-            onClicked: { console.log("index"+model.index); selected = (selected == model.index ? -1 : model.index); }
-            onPressAndHold: pageStack.push(Qt.resolvedUrl("EditPage.qml"))
-        }
     }
     Item {
         id: subitem
         anchors.top: labelTitle.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-      //  y: labelTitle.height
-        height: labelUser.height + labelPassword.height
+        height: labelUser.height + labelPassword.height + labelUrl.height + or.height
         opacity: 0.0
         Label {
-            id: labelUser
+            id: labelUrl
             anchors.top: subitem.top
+            anchors.right: parent.right
+            anchors.left: parent.left
+            anchors.leftMargin: Theme.paddingLarge
+            anchors.rightMargin: Theme.paddingMedium
+            text: model.url
+        }
+        Label {
+            id: labelUser
+            anchors.top: labelUrl.bottom
             anchors.right: parent.right
             anchors.left: parent.left
             anchors.leftMargin: Theme.paddingLarge
@@ -55,13 +60,6 @@ ListItem {
             anchors.left: parent.left
             width: 2
         }
-        MouseArea {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: sep1.bottom
-            onClicked: { model.index = -1; }
-        }
 
         Item {
             id: or
@@ -69,7 +67,7 @@ ListItem {
             anchors.left: parent.left
             anchors.right: parent.right
 
-            height: childrenRect
+            height: Theme.itemSizeSmall
             RemorseItem {
                 anchors.top: parent.top
                 id: remorse
@@ -105,12 +103,7 @@ ListItem {
             name: "selected"
             when: (selected==index)
             PropertyChanges {target: subitem; opacity: 1.0; }
-            PropertyChanges { target: delegate;   contentHeight: Theme.itemSizeLarge + Theme.itemSizeSmall;}
-        },
-        State {
-            name: "popup"
-            when: (contextMenu != null && (contextMenu.parent == delegate))
-            PropertyChanges {target: delegate; contentHeight:  Theme.itemSizeLarge * 3; }
+            PropertyChanges { target: delegate;   contentHeight: Theme.itemSizeLarge + Theme.itemSizeLarge + Theme.itemSizeSmall;}
         }
     ]
 

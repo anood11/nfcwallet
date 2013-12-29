@@ -9,13 +9,15 @@ PKGCONFIG += sailfishapp
 SOURCES += main.cpp \
     nfckeywallet.cpp \
     requesticon.cpp \
-    pgp_manager.cpp
+    pgp_manager.cpp \
+    jsonstorage.cpp
 
 # C++ headers
 HEADERS += \
     nfckeywallet.h \
     requesticon.h \
-    pgp_manager.h
+    pgp_manager.h \
+    jsonstorage.h
 
 # QML files and folders
 #qml.files = *.qml *.js scripts pages cover main.qml
@@ -42,7 +44,8 @@ OTHER_FILES = rpm/nfckeywallet.yaml \
     qml/pages/LicensePage.qml \
     qml/js/key_wallet.js \
     qml/pages/ListDelegate.qml \
-    qml/pages/CategoryPage.qml
+    qml/pages/CategoryPage.qml \
+    qml/pages/MyButton.qml
 
 RESOURCES += \
     qrc.qrc
