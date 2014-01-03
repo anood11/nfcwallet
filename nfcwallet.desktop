@@ -1,9 +1,9 @@
 [Desktop Entry]
 X-Nemo-Application-Type=silica-qt5
 Type=Application
-Name=nfckeywallet
-Icon=nfckeywallet
-Exec=nfckeywallet
+Name=Nfc Wallet
+Icon=nfcwallet
+Exec=nfcwallet
 X-Desktop-File-Install-Version=0.20
 
 

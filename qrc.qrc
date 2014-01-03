@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>nfckeywallet.png</file>
+        <file>nfcwallet.png</file>
     </qresource>
 </RCC>

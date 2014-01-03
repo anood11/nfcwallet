@@ -1,35 +1,43 @@
-function wallet_get()
+function get_items()
 {
-    listModel.clear();
-    var text = storage.dump();
+    modelItems.clear();
+    var text = storage.get_items();
     var jsonObject = eval('(' + text + ')');
-    loaded(jsonObject);
-    /*
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET","http://7b4.se/nfckeywallet/items/list",true);
-    xhr.onreadystatechange = function()
+    for (var index in jsonObject)
     {
-        if ( xhr.readyState == xhr.DONE)
-        {
-            if ( xhr.status == 200)
-            {
-                var jsonObject = eval('(' + xhr.responseText + ')');
-//                console.log(xhr.responseText)
-                loaded(jsonObject)
-            }
-        }
+        console.log(jsonObject[index].name)
+        modelItems.append({
+                         "title" : jsonObject[index].title,
+                          "url" : jsonObject[index].url,
+                         "login" : jsonObject[index].user,
+                         "password" : jsonObject[index].password,
+                         "category" : jsonObject[index].category
+                         });
     }
-    xhr.send();
-    */
 }
 
-function wallet_post(uuid, group_uuid, site, title, user_name, password)
+function get_categorys()
+{
+    modelCategorys.clear();
+    var text = storage.get_categorys();
+    var jsonObject = eval('(' + text + ')');
+    for (var index in jsonObject)
+    {
+        modelCategorys.append({
+                         "title" : jsonObject[index].name
+                         });
+    }
+}
+
+
+/** FIXME
+function sync2server(site, uuid, group_uuid, site, title, user_name, password)
 {
     var xhr = new XMLHttpRequest();
 
     var params = JSON.stringify({uuid: uuid, group_uuid: group_uuid, site: site, title: title, user_name: user_name, password: password})
     console.log(params)
-    xhr.open("POST","http://7b4.se/nfckeywallet/items/api/items.json",true);
+    xhr.open("POST", site+"/nfckeywallet/items/api/items.json",true);
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.setRequestHeader("Content-length", params.length);
     xhr.setRequestHeader("Connection", "close");
@@ -41,10 +49,7 @@ function wallet_post(uuid, group_uuid, site, title, user_name, password)
         {
             if ( xhr.status == 200)
             {
-//                var jsonObject = eval('(' + xhr.responseText + ')');
                 console.log(xhr.responseText)
-//                wallet_get();
-//                loaded(jsonObject)
             }
         }
     }
@@ -52,33 +57,4 @@ function wallet_post(uuid, group_uuid, site, title, user_name, password)
 
 }
 
-
-
-function loaded(jsonObject)
-{
-
-    for ( var index in jsonObject  )
-    {
-        console.log(jsonObject[index].name)
-        listModel.append({
-                         "title" : jsonObject[index].title,
-                          "url" : jsonObject[index].url,
-                         "login" : jsonObject[index].user,
-                         "password" : jsonObject[index].password,
-                         "category" : jsonObject[index].category
-                         });
-    }
-
-
-
-/*
-    listModel.append({"iconUrl" : "http://www.google.com/s2/favicons?domain=www.icabanken.se", "uuid" : nfc.generateUUID(), "name" : "Ica kort","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Bank", "deleted" : false })
-    listModel.append({"iconUrl" : "http://www.google.com/s2/favicons?domain=www.coop.se", "uuid" : nfc.generateUUID(), "name" : "Coop Kort","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Bank", "deleted" : false })
-    listModel.append({"iconUrl" : "http://www.google.com/s2/favicons?domain=www.facebook.com", "uuid" : nfc.generateUUID(), "name" : "Facebook","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Social media", "deleted" : false })
-    listModel.append({"iconUrl" : "http://twitter.com/favicon.ico", "uuid" : nfc.generateUUID(), "name" : "Twitter","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Social media", "deleted" : false })
-    listModel.append({"iconUrl" : "http://ssl.gstatic.com/s2/oz/images/faviconr3.ico", "uuid" : nfc.generateUUID(), "name" : "Google+","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Social media", "deleted" : false })
-    listModel.append({"iconUrl" : "http://talk.maemo.org/favicon.ico", "uuid" : nfc.generateUUID(), "name" : "Maemo","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Linux community", "deleted" : false })
-    listModel.append({"iconUrl" : "http://merproject.org/images/mer-logo.png", "uuid" : nfc.generateUUID(), "name" : "Merproject","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Linux community", "deleted" : false })
-    listModel.append({"iconUrl" : "http://www.jolla.com/favicon.ico", "uuid" : nfc.generateUUID(), "name" : "Jolla","login" : "foobar@ihatespam.com", "password" : nfc.generatePassword(), "category" : "Companys", "deleted" : false })
 */
-}

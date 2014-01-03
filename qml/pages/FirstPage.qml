@@ -1,6 +1,6 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
-
+import QtSystemInfo 5.0
 Page {
     id: page
     anchors.fill: parent
@@ -24,9 +24,27 @@ Page {
         ListElement  { title: "E"; character : "E";}
     }
 
+    DeviceInfo
+    {
+        id: sinfo
+    }
+
     function put_char(tx)
     {
         login = login+tx
+    }
+
+    function do_login(pw)
+    {
+        var imei = sinfo.imei(0)
+        if (imei.length == 0)
+        {
+            imei = "012345678912345"
+        }
+        if (crypto.login(Qt.md5(imei+login)))
+        {
+                pageStack.push(Qt.resolvedUrl("ListPage.qml"))
+        }
     }
 
     // To enable PullDownMenu, place our content in a SilicaFlickable
@@ -49,20 +67,20 @@ Page {
 
         // Tell SilicaFlickable the height of its content.
         contentHeight: 800
-        contentWidth: 500
+        contentWidth: Screen.width
         // Place our content in a Column.  The PageHeader is always placed at the top
         // of the page, followed by our content.
         Column {
 //            anchors.topMargin: Theme.paddingLarge
-            anchors.fill: parent
+            anchors.centerIn: parent
             anchors.leftMargin: Theme.paddingLarge
             anchors.rightMargin: Theme.paddingLarge
-            Label {
+            Text {
                 width: page.width
-                height: 200
+                height: 100
                 visible: !grid.visible
-                anchors.centerIn: parent
-                anchors.horizontalCenter: parent.horizontalCenter
+//                anchors.centerIn: parent
+//                anchors.horizontalCenter: parent.horizontalCenter
                 horizontalAlignment: Text.AlignHCenter
                 text: "<center>Use your</center><br /><center>NFC Tag to Login</center><br /><center>Or tap to enter Pin</center>"
                 color: sib.pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
@@ -136,7 +154,7 @@ Page {
                     icon.source: "image://theme/icon-m-next"
                     icon.width: 64
                     icon.height: 64
-                    onClicked: { nfc.login("fake"); pageStack.replace(Qt.resolvedUrl("ListPage.qml")) }
+                    onClicked: do_login()
                 }
             }
         }

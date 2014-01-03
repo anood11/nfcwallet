@@ -4,17 +4,15 @@ import "../js/key_wallet.js" as Remote
 
 Dialog {
     id: dialog
-    anchors.fill: parent
-    DialogHeader{
-        id: header
-        acceptText: "Save"
-    }
+    width: Screen.width
+    height: Screen.height
     property string title: ""
     property string url: ""
     property string iconUrl: ""
     property string login: ""
     property string password: ""
     property string group_uuid: ""
+    property string category: ""
     onAccepted: {
         if (uuid == "")
         {
@@ -28,20 +26,31 @@ Dialog {
         title = fieldTitle.text
         login = fieldLogin.text
         password = fieldPassword.text
+        category = modelCategorys.get(combo.currentIndex).title
         console.log(uuid)
         console.log(title)
-        Remote.wallet_post(uuid, group_uuid, url, title, login, password)
+        storage.updateOrInsert(title, url, login, password, category)
+        crypto.save()
+        Remote.get_items()
+        Remopte.get_categorys()
+//        Remote.wallet_post(uuid, group_uuid, url, title, login, password)
         // Remote.wallet
     }
 
-    SilicaFlickable {
-        anchors.top: header.bottom
+    Flickable {
+        contentHeight: (Theme.itemSizeSmall * 20) // this is brain dead
+        //width: parent.width
+               //        height: Theme.itemSizeSmall
+        y: 80
+        height: parent.height - 80
+      //  anchors.top: header.bottom
+        anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        contentHeight: (Theme.itemSizeSmall * 6) // this is brain dead
-        Column {
+        Column
+        {
             anchors.fill: parent
+            width: parent.width
             TextField{
                 id: fieldTitle
                 width: parent.width
@@ -64,17 +73,7 @@ Dialog {
                     fieldSite.focus = true
                 }
             }
-/*
-            Label
-            {
-                id: labelTitle
-                font.pixelSize: Theme.fontSizeSmall
-                anchors.leftMargin: Theme.paddingLarge
-                anchors.rightMargin: Theme.paddingMedium
-                text: "Title"
-                color: fieldTitle.activeFocus ? Theme.highlightColor : Theme.primaryColor
-            }
-*/
+
             TextField{
                 id: fieldSite
                 width: parent.width
@@ -99,20 +98,7 @@ Dialog {
                     title = url.replace("http://www.","").replace("https://www.","").replace("www.","").split(".")[0]
                 }
             }
-            /*
-            Label{
-                id: labelSite
-                anchors.top: fieldSite.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.leftMargin: Theme.paddingLarge
-                anchors.rightMargin: Theme.paddingMedium
-                font.pixelSize: Theme.fontSizeSmall
-                text: qsTr("Site")
-                color: fieldSite.activeFocus ? Theme.highlightColor : Theme.primaryColor
-                width: parent.width
-            }
-    */
+
             TextField{
                 id: fieldLogin
                 width: parent.width
@@ -122,11 +108,7 @@ Dialog {
                      fieldPassword.focus = true
                 }
             }
-            /*
-            Label{
-                text: "Login:"
-            }
-            */
+
             Item {
                 width: parent.width
                 height: Theme.itemSizeSmall
@@ -150,39 +132,39 @@ Dialog {
                     onClicked: { password=nfc.generatePassword() }
                 }
             }
-/*
-            Label{
-                id: pwLabel
-                text: "Password:"
-            }
-            */
-            Item {
-                width: parent.width
-                height: Theme.itemSizeSmall
-                ComboBox {
-                    id: combo
-                    label: "Category:"
-                    menu: ContextMenu {
-                        TextField {
-                            id: categoryEntry
-                            placeholderText: qsTr("Enter new category or select from below")
-                            width: parent.width
-                            Keys.onReturnPressed: { if (categoryEntry.text.length) dialog.accept(); }
+            ComboBox {
+                id: combo
+                label: "Category:"
+                height: Screen.height - 80
+                value: category
+                menu: ContextMenu {
+                    TextField {
+                        id: categoryEntry
+                        placeholderText: qsTr("Enter new category or select from below")
+                        width: parent.width
+                        EnterKey.iconSource: categoryEntry.text.length == 0 ? "image://theme/icon-m-enter-close" : "image://theme/icon-m-enter-accept"
+                        Keys.onReturnPressed: {
+                            if (categoryEntry.text.length)
+                            {
+                                modelCategorys.append({"title" : categoryEntry.text});
+                                combo.currentIndex = modelCategorys.count - 1
+                                console.log("w"+combo.currentIndex+" d "+modelCategorys.get(combo.currentIndex).title)
+                                category = modelCategorys.get(combo.currentIndex).title
+                                categoryEntry.text = ""
+                                categoryEntry.focus = false
+                                combo.menu.hide()
+                            }
+                            else
+                            {
+                                categoryEntry.focus = false
+                            }
                         }
-                        MenuItem { text: "Communitys" }
-                        MenuItem { text: "Banks" }
-                        MenuItem { text: "Work" }
-                        MenuItem { text: "Other" }
                     }
-                }
-                IconButton
-                {
-                    anchors.right: parent.right
-                    anchors.rightMargin: Theme.paddingLarge
-                    icon.source: "image://theme/icon-l-add"
-                    icon.width: 48 // FIXME hardcoded
-                    icon.height: 48
-                    onClicked: pageStack.push("CategoryPage.qml")
+                    Repeater{
+
+                        model: modelCategorys
+                        MenuItem { visible: !categoryEntry.focus; text: title }
+                    }
                 }
             }
         }

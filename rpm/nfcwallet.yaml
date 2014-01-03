@@ -1,4 +1,4 @@
-Name: nfckeywallet
+Name: nfcwallet
 Summary: Nfc Key wallet
 Version: 0.1
 Release: 1
@@ -11,18 +11,18 @@ Description: |
 Configure: none
 Builder: qtc5
 PkgConfigBR:
-- Qt5Qml
-- qdeclarative5-boostable
-- Qt5Quick
 - Qt5Core
-PkgBR:
-- 
+- Qt5Quick
+- qdeclarative5-boostable
+- Qt5Qml
+PkgBR: []
 Requires:
-- mapplauncherd-booster-silica-qt5
 - sailfishsilica-qt5
+- mapplauncherd-booster-silica-qt5
+- qt5-qtdeclarative-systeminfo
 Files:
-- /usr/share/nfckeywallet
-- /usr/share/%{name}
-- /usr/bin
-- /usr/share/applications
+- /usr/share/nfcwallet
 - /usr/share/icons/hicolor/86x86/apps
+- /usr/share/applications
+- /usr/bin
+- /usr/share/%{name}
