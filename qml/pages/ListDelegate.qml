@@ -1,14 +1,12 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
-
 ListItem {
     id: delegate
     anchors.left: parent.left
     anchors.right: parent.right
     contentHeight: Theme.itemSizeSmall
     onClicked: { console.log("index"+model.index); selected = (selected == model.index ? -1 : model.index); }
-    onPressAndHold: pageStack.push(Qt.resolvedUrl("EditPage.qml"))
-
+    onPressAndHold: edit(model.md5id, model.title, model.url, model.login, model.password, model.category)
     Label {
         id: labelTitle
         anchors.left: parent.left
@@ -78,7 +76,7 @@ ListItem {
                anchors.left: parent.left
                anchors.leftMargin: Theme.paddingLarge
                icon.source: "image://theme/icon-l-delete"
-               onClicked: remorse.execute(delegate, "Deleting", function() { } )
+               onClicked: remorse.execute(delegate, "Deleting", function() { storage.remove(md5id); crypto.save(); refresh(); } )
             }
             IconButton {
                visible: !remorse.visible
@@ -87,7 +85,7 @@ ListItem {
                icon.source: "image://theme/icon-m-edit"
                icon.height: 48
                icon.width: 48
-               onClicked: pageStack.push(Qt.resolvedUrl("EditPage.qml"))
+               onClicked: edit(model.md5id, model.title, model.url, model.login, model.password, model.category)
             }
         }
         Separator{

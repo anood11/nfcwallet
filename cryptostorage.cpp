@@ -19,17 +19,17 @@ CryptoStorage::CryptoStorage(AppInfo *_appinfo, JsonStorage *_json) :
 
 bool CryptoStorage::login(QString pw)
 {
+    QJsonParseError failed;
     QFile file(p_appinfo->getConfigPath()+"/nfcwallet.json.crypt");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        emit error(FileNotFound, "There were no database found");
-        return false;
+        return true;
     }
 
     QJsonDocument doc;
     QByteArray bytes = file.readAll();//.replace("\n","");
-    doc = QJsonDocument::fromJson(bytes);
-    if (doc.array().empty())
+    doc = QJsonDocument::fromJson(bytes, &failed);
+    if (doc.array().empty() && failed.error != QJsonParseError::NoError)
     {
         emit error(Password, "Login failed");
         return false;

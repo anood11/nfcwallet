@@ -7,6 +7,7 @@ function get_items()
     {
         console.log(jsonObject[index].name)
         modelItems.append({
+                              "md5id" : jsonObject[index].md5id,
                          "title" : jsonObject[index].title,
                           "url" : jsonObject[index].url,
                          "login" : jsonObject[index].user,

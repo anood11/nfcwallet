@@ -5,10 +5,20 @@ import "pages"
 ApplicationWindow
 {
     id: main
-    property string appicon: "qrc:/nfckeywallet.png"
+    property string appicon: "qrc:/nfcwallet.png"
     property string uuid: ""
     property int selected: -1
     property string errorMsg: ""
+
+    /* used by edit window */
+    property string title: ""
+    property string url: ""
+    property string iconUrl: ""
+    property string user: ""
+    property string password: ""
+    property string group_uuid: ""
+    property string category: ""
+    property string md5id: ""
 
     ListModel {
         id: modelItems
@@ -29,12 +39,13 @@ ApplicationWindow
         scale: 1
         z: 1
         Text{
-            anchors.centerIn: parent
+            anchors.fill: parent
             font.pixelSize: Theme.fontSizeLarge
             color: Theme.primaryColor
             text: errorMsg
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
+            wrapMode: Text.WordWrap
         }
         MouseArea
         {

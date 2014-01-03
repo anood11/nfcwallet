@@ -6,35 +6,23 @@ Dialog {
     id: dialog
     width: Screen.width
     height: Screen.height
-    property string title: ""
-    property string url: ""
-    property string iconUrl: ""
-    property string login: ""
-    property string password: ""
-    property string group_uuid: ""
-    property string category: ""
     onAccepted: {
-        if (uuid == "")
+        if (md5id == "")
         {
-            uuid = nfc.generateUUID()
-        }
-        if (group_uuid == "")
-        {
-            group_uuid = nfc.generateUUID()
+            md5id = Qt.md5(fieldTitle.text)
         }
         url = fieldSite.text
         title = fieldTitle.text
-        login = fieldLogin.text
+        user = fieldLogin.text
         password = fieldPassword.text
         category = modelCategorys.get(combo.currentIndex).title
-        console.log(uuid)
+        console.log(md5id)
         console.log(title)
-        storage.updateOrInsert(title, url, login, password, category)
+        storage.updateOrInsert(md5id, title, url, user, password, category)
+        md5id = ""
         crypto.save()
         Remote.get_items()
-        Remopte.get_categorys()
-//        Remote.wallet_post(uuid, group_uuid, url, title, login, password)
-        // Remote.wallet
+        Remote.get_categorys()
     }
 
     Flickable {
@@ -103,7 +91,7 @@ Dialog {
                 id: fieldLogin
                 width: parent.width
                 placeholderText: "Enter Loginname"
-                text: login
+                text: user
                 Keys.onReturnPressed: {
                      fieldPassword.focus = true
                 }
@@ -124,9 +112,10 @@ Dialog {
 
                 IconButton
                 {
+                    visible: fieldPassword.text == ""
                     anchors.right: parent.right
                     anchors.rightMargin: Theme.paddingLarge
-                    icon.source: "qrc:/nfckeywallet.png"
+                    icon.source: "qrc:/nfcwallet.png"
                     icon.height: 48
                     icon.width: 48
                     onClicked: { password=nfc.generatePassword() }

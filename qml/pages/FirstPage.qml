@@ -5,6 +5,7 @@ Page {
     id: page
     anchors.fill: parent
     property string login: ""
+
     ListModel{
         id: buttons
         ListElement  { title: "0"; character : "0";}
@@ -75,24 +76,25 @@ Page {
             anchors.centerIn: parent
             anchors.leftMargin: Theme.paddingLarge
             anchors.rightMargin: Theme.paddingLarge
-            Text {
+            MouseArea
+            {
+                id: sib
+                visible: !grid.visible
                 width: page.width
                 height: 100
-                visible: !grid.visible
-//                anchors.centerIn: parent
-//                anchors.horizontalCenter: parent.horizontalCenter
-                horizontalAlignment: Text.AlignHCenter
-                text: "<center>Use your</center><br /><center>NFC Tag to Login</center><br /><center>Or tap to enter Pin</center>"
-                color: sib.pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
-                font.pixelSize: Theme.fontSizeExtraLarge
-                MouseArea
+                onClicked:
                 {
-                    id: sib
-                    anchors.fill: parent
-                    onClicked:
-                    {
-                        grid.visible = true
-                    }
+                    grid.visible = true
+                }
+                Text {
+    //                anchors.centerIn: parent
+    //                anchors.horizontalCenter: parent.horizontalCenter
+                    height: parent.height
+                    width: parent.width
+                    horizontalAlignment: Text.AlignHCenter
+                    text: "<center>Use your</center><br /><center>NFC Tag to Login</center><br /><center>Or tap to enter Pin</center>"
+                    color: sib.pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                    font.pixelSize: Theme.fontSizeExtraLarge
                 }
             }
 
