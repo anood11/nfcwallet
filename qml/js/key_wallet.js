@@ -30,6 +30,20 @@ function get_categorys()
     }
 }
 
+function get_index_from_category(category)
+{
+    for (var index = 0; index < modelCategorys.count; index++)
+    {
+        if (modelCategorys.get(index).title == category)
+        {
+            console.log("wtf "+index)
+            return index;
+        }
+    }
+
+    return -1;
+}
+
 
 /** FIXME
 function sync2server(site, uuid, group_uuid, site, title, user_name, password)

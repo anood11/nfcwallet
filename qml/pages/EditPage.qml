@@ -6,11 +6,25 @@ Dialog {
     id: dialog
     width: Screen.width
     height: Screen.height
+
+    function reset_fields()
+    {
+        console.log("reset_fields")
+        md5id = ""
+        title = ""
+        url = ""
+        category = ""
+        categoryIndex = -1
+//        user = ""
+        password = ""
+    }
     onAccepted: {
+        watchdog.restart();
         if (md5id == "")
         {
             md5id = Qt.md5(fieldTitle.text)
         }
+
         url = fieldSite.text
         title = fieldTitle.text
         user = fieldLogin.text
@@ -18,12 +32,18 @@ Dialog {
         category = modelCategorys.get(combo.currentIndex).title
         console.log(md5id)
         console.log(title)
+        console.log(category)
         storage.updateOrInsert(md5id, title, url, user, password, category)
-        md5id = ""
         crypto.save()
+        reset_fields()
+
         Remote.get_items()
         Remote.get_categorys()
     }
+
+    onRejected: {reset_fields(); watchdog.restart() }
+
+    Component.onCompleted: watchdog.stop()
 
     Flickable {
         contentHeight: (Theme.itemSizeSmall * 20) // this is brain dead
@@ -125,7 +145,8 @@ Dialog {
                 id: combo
                 label: "Category:"
                 height: Screen.height - 80
-                value: category
+                currentIndex: categoryIndex
+//                value: category
                 menu: ContextMenu {
                     TextField {
                         id: categoryEntry
@@ -136,9 +157,10 @@ Dialog {
                             if (categoryEntry.text.length)
                             {
                                 modelCategorys.append({"title" : categoryEntry.text});
-                                combo.currentIndex = modelCategorys.count - 1
-                                console.log("w"+combo.currentIndex+" d "+modelCategorys.get(combo.currentIndex).title)
-                                category = modelCategorys.get(combo.currentIndex).title
+                                categoryIndex = modelCategorys.count - 1
+                          //      category = categoryEntry.text
+                                //categoryIndex = modelCategorys.get(combo.currentIndex).title
+                              //  console.log("cind "+combo.currentIndex+" ind "+categoryIndex+" t "+modelCategorys.get(combo.currentIndex).title)
                                 categoryEntry.text = ""
                                 categoryEntry.focus = false
                                 combo.menu.hide()

@@ -11,10 +11,10 @@ enum LoginError{ Password = 0, FileNotFound = 1, CouldNotSave = 2};
 class CryptoStorage : public QObject
 {
     Q_OBJECT
-    uint8_t key[16];
-    uint8_t cbc[16];
+    QByteArray key;
     AppInfo *p_appinfo;
     JsonStorage *p_json;
+    QByteArray cryptated;
 public:
     explicit CryptoStorage(AppInfo *config, JsonStorage *_json);
 

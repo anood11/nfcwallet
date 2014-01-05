@@ -9,7 +9,7 @@ MouseArea
         id: tx
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -1
-        color: parent.pressed ? Theme.secondaryHighlightColor : Theme.secondaryColor
+        color: Theme.secondaryHighlightColor //: Theme.secondaryColor
         font.pixelSize: Theme.fontSizeExtraLarge
     }
 

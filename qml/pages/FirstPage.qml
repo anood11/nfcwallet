@@ -1,6 +1,7 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
 import QtSystemInfo 5.0
+import QtFeedback 5.0
 Page {
     id: page
     anchors.fill: parent
@@ -25,6 +26,17 @@ Page {
         ListElement  { title: "E"; character : "E";}
     }
 
+
+    HapticsEffect {
+        id: vib
+        attackIntensity: 0.0
+        attackTime: 200
+        intensity: 1.0
+        duration: 100
+        fadeTime: 200
+        fadeIntensity: 0.0
+    }
+
     DeviceInfo
     {
         id: sinfo
@@ -32,7 +44,8 @@ Page {
 
     function put_char(tx)
     {
-        login = login+tx
+        vib.start()
+        login = login + tx
     }
 
     function do_login(pw)
@@ -42,10 +55,13 @@ Page {
         {
             imei = "012345678912345"
         }
-        if (crypto.login(Qt.md5(imei+login)))
+        if (crypto.login(imei+login))
         {
-                pageStack.push(Qt.resolvedUrl("ListPage.qml"))
+            vib.start()
+            watchdog.start()
+            pageStack.push(Qt.resolvedUrl("ListPage.qml"))
         }
+        login = ""
     }
 
     // To enable PullDownMenu, place our content in a SilicaFlickable
@@ -143,11 +159,11 @@ Page {
                     icon.source: "image://theme/icon-l-cancel"
                     icon.width: 64
                     icon.height: 64
-                    onClicked: { login = "" }
+                    onClicked: {vib.start(); login = "" }
                 }
                 MyButton{
                     text: "F"
-                    onClicked: put_char(text)
+                    onClicked: { put_char(text);  }
                 }
                 IconButton
                 {

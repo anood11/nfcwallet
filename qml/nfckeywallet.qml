@@ -1,7 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "pages"
-
 ApplicationWindow
 {
     id: main
@@ -16,15 +15,27 @@ ApplicationWindow
     property string iconUrl: ""
     property string user: ""
     property string password: ""
-    property string group_uuid: ""
+    /* used in edit combo */
+    property int categoryIndex: -1
     property string category: ""
     property string md5id: ""
+
+    onSelectedChanged: watchdog.restart()
 
     ListModel {
         id: modelItems
     }
     ListModel {
         id: modelCategorys
+    }
+
+    Timer
+    {
+        id: watchdog
+        repeat: false
+        running: false
+        interval: 30000
+        onTriggered: pageStack.pop()
     }
 
     Rectangle

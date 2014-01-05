@@ -13,7 +13,7 @@ Page {
         user = _login
         password = _password
         category = _category
-
+        categoryIndex = Remote.get_index_from_category(category)
         pageStack.push(Qt.resolvedUrl("EditPage.qml"))
     }
     Component.onCompleted: { Remote.get_categorys(); Remote.get_items(); }
@@ -28,7 +28,6 @@ Page {
 
     SilicaListView {
         id: listView
-
         PullDownMenu {
             MenuItem {
                 text: "About Nfc Wallet"

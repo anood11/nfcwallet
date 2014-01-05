@@ -72,14 +72,14 @@ ListItem {
             }
 
             IconButton {
-               visible: !remorse.visible
+                visible: Qt.md5("nfcwallet") != md5id
                anchors.left: parent.left
                anchors.leftMargin: Theme.paddingLarge
                icon.source: "image://theme/icon-l-delete"
                onClicked: remorse.execute(delegate, "Deleting", function() { storage.remove(md5id); crypto.save(); refresh(); } )
             }
             IconButton {
-               visible: !remorse.visible
+               visible: Qt.md5("nfcwallet") != md5id
                anchors.rightMargin: Theme.paddingLarge
                anchors.right: parent.right
                icon.source: "image://theme/icon-m-edit"

@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QStandardPaths>
+#include <QCryptographicHash>
 #include <QJsonDocument>
 #include <QFile>
 #include <QDir>
@@ -7,34 +8,64 @@
 #include <QTextStream>
 #include "jsonstorage.h"
 #include "cryptostorage.h"
-
+#include "libcrypto/aes/aes.h"
 
 CryptoStorage::CryptoStorage(AppInfo *_appinfo, JsonStorage *_json) :
     QObject(),
+    key(),
     p_appinfo(_appinfo),
-    p_json(_json)
+    p_json(_json),
+    cryptated()
 {
-
+    key.resize(32);
 }
 
 bool CryptoStorage::login(QString pw)
 {
+    int offset = 0;
+    AES_KEY skey;
+    QJsonDocument doc;
     QJsonParseError failed;
     QFile file(p_appinfo->getConfigPath()+"/nfcwallet.json.crypt");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    key = QCryptographicHash::hash(pw.toLatin1(), QCryptographicHash::Sha256);
+    if (key.length() != 32)
     {
+        emit error(Password, "wtf!?");
+        return false;
+    }
+
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        p_json->updateOrInsert(QCryptographicHash::hash("nfcwallet", QCryptographicHash::Md5).toHex(), "NfcWalletKey", "", "", key.toHex().toUpper(), "nfcwallet");
         return true;
     }
 
-    QJsonDocument doc;
-    QByteArray bytes = file.readAll();//.replace("\n","");
-    doc = QJsonDocument::fromJson(bytes, &failed);
+    QByteArray bytes = file.readAll();
+    cryptated.resize(bytes.length()+1);
+    qDebug() << "data " << bytes.toHex() << " dlenght " << bytes.length();
+
+    private_AES_set_decrypt_key((uint8_t*)key.data(), 256, &skey);
+
+    while (bytes.length())
+    {
+        qDebug() << bytes.length();
+        AES_decrypt((uint8_t*)bytes.data(),(uint8_t*) &cryptated.data()[offset], &skey);
+        bytes.remove(0, 16);
+        offset += 16;
+    };
+
+
+    qDebug() << "dec" << cryptated;
+    doc = QJsonDocument::fromJson(cryptated, &failed);
     if (doc.array().empty() && failed.error != QJsonParseError::NoError)
     {
         emit error(Password, "Login failed");
         return false;
     }
+
     p_json->setItemArray(doc.array());
+
+    cryptated.clear();
     qDebug("loaded?");
     qDebug() << doc.toJson();
     qDebug("loadeddo");
@@ -44,7 +75,17 @@ bool CryptoStorage::login(QString pw)
 
 void CryptoStorage::save()
 {
+    AES_KEY skey;
     QString data;
+    int offset = 0;
+
+    if (key.length() != 32)
+    {
+        qDebug() << key.toHex();
+        emit error(-1, "WTF? key corrupt?");
+        return ;
+    }
+    private_AES_set_encrypt_key((uint8_t*)key.data(), 256, &skey);
 
     data = p_json->get_items();
     QByteArray bytes;
@@ -56,13 +97,20 @@ void CryptoStorage::save()
     }
 
     QFile file(p_appinfo->getConfigPath()+"/nfcwallet.json.crypt");
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    if (!file.open(QIODevice::WriteOnly))
     {
         qDebug("Could not save :(");
         emit error(CouldNotSave, "Could not save");
     }
+    cryptated.resize(bytes.length());
+    while (bytes.length())
+    {
+        AES_encrypt((uint8_t*)bytes.data(),(uint8_t*) &cryptated.data()[offset], &skey);
+        bytes.remove(0, 16);
+        offset += 16;
+    }
 
-    file.write(bytes);
+    file.write(cryptated);
     file.close();
 }
 
