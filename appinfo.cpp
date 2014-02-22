@@ -1,18 +1,27 @@
 #include <QDir>
 #include <QStandardPaths>
+#include <QDebug>
 #include "appinfo.h"
 #include "gen_config.h"
-AppInfo::AppInfo(QString argv0) :
+AppInfo::AppInfo(QString appname) :
     QObject()
 {
-    QStringList path = QStandardPaths::standardLocations(QStandardPaths::ConfigLocation);
-    config_path = path[0]+"/"+QFileInfo(argv0).baseName();
-    app_name = QFileInfo(argv0).baseName().replace("harbour-", "");
+    // data paths append organization and appname
+    data_path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    // for some wierd reason config path does not append appname
+    config_path = QDir(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation)).filePath(appname);
+    qDebug() << config_path;
+    app_name = appname.replace("harbour-", "");
     version = QString(VERSION);
 
     QDir dir(config_path);
     if (!dir.exists()){
-        dir.mkdir(config_path);
+        dir.mkpath(config_path);
+        // FIXME failcheck
+    }
+    dir.setPath(data_path);
+    if (!dir.exists()){
+        dir.mkpath(data_path);
         // FIXME failcheck
     }
 }

@@ -14,12 +14,13 @@
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
     int exitcode;
-    AppInfo appinfo(argv[0]);
-    NfcKeyWallet nfc;
-//    GPGManager pgp;
 
     QGuiApplication *app = SailfishApp::application(argc, argv);
+    QGuiApplication::setOrganizationName("7b4");
+
     app->setQuitOnLastWindowClosed(true);
+    AppInfo appinfo(QCoreApplication::applicationName());
+    NfcKeyWallet nfc;
 
     //pgp.makePGPKey("Mikael Hermansson", "foo@foo.com", "test");
 

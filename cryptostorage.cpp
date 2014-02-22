@@ -26,7 +26,7 @@ bool CryptoStorage::login(QString pw)
     AES_KEY skey;
     QJsonDocument doc;
     QJsonParseError failed;
-    QFile file(p_appinfo->getConfigPath()+"/nfcwallet.json.crypt");
+    QFile file(p_appinfo->getDataPath()+"/nfcwallet.json.crypt");
     key = QCryptographicHash::hash(pw.toLatin1(), QCryptographicHash::Sha256);
     if (key.length() != 32)
     {
@@ -96,7 +96,7 @@ void CryptoStorage::save()
         bytes.insert(0, '\n');
     }
 
-    QFile file(p_appinfo->getConfigPath()+"/nfcwallet.json.crypt");
+    QFile file(p_appinfo->getDataPath()+"/nfcwallet.json.crypt");
     if (!file.open(QIODevice::WriteOnly))
     {
         qDebug("Could not save :(");

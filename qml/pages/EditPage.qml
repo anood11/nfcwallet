@@ -66,6 +66,7 @@ Dialog {
                 placeholderText: qsTr("Enter title here")
                 inputMethodHints: Qt.ImhUrlCharactersOnly
                 text: title
+                label: qsTr("Title")
                 focus: true
                 onFocusChanged: {
                     if (!focus)
@@ -85,7 +86,8 @@ Dialog {
             TextField{
                 id: fieldSite
                 width: parent.width
-                placeholderText: "Enter site here"
+                placeholderText: qsTr("Enter site here")
+                label: qsTr("Site")
                 inputMethodHints: Qt.ImhUrlCharactersOnly
                 text: url
                 focus: true
@@ -110,7 +112,8 @@ Dialog {
             TextField{
                 id: fieldLogin
                 width: parent.width
-                placeholderText: "Enter Loginname"
+                placeholderText: qsTr("Enter Login")
+                label: qsTr("Login")
                 text: user
                 Keys.onReturnPressed: {
                      fieldPassword.focus = true
@@ -123,7 +126,8 @@ Dialog {
                 TextField{
                     id: fieldPassword
                     width: parent.width - 64
-                    placeholderText: "Enter Password"
+                    placeholderText: qsTr("Enter Password")
+                    label: qsTr("Password")
                     text: password
                     Keys.onReturnPressed: {
                          combo.focus = true
@@ -143,7 +147,7 @@ Dialog {
             }
             ComboBox {
                 id: combo
-                label: "Category:"
+                label: qsTr("Category")
                 height: Screen.height - 80
                 currentIndex: categoryIndex
 //                value: category

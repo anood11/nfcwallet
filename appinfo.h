@@ -7,6 +7,7 @@ class AppInfo : public QObject
 {
     Q_OBJECT
     QString config_path;
+    QString data_path;
     QString app_name;
     QString version;
 public:
@@ -14,6 +15,7 @@ public:
 signals:
 
 public slots:
+    QString getDataPath(){return data_path;};
     QString getConfigPath(){return config_path;};
     QString getAppName(){return app_name;};
     QString getVersion(){return version;};
