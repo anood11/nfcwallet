@@ -10,7 +10,6 @@
 #include "cryptostorage.h"
 #include "jsonstorage.h"
 
-#define VERSION "0.0.1"
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
     int exitcode;
@@ -19,7 +18,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QGuiApplication::setOrganizationName("7b4");
 
     app->setQuitOnLastWindowClosed(true);
-    AppInfo appinfo(QCoreApplication::applicationName());
+    AppInfo appinfo(app);
     NfcKeyWallet nfc;
 
     //pgp.makePGPKey("Mikael Hermansson", "foo@foo.com", "test");

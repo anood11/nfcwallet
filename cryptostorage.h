@@ -23,6 +23,7 @@ signals:
 public slots:
     void save();
     bool login(QString pw);
+    void setKey(QString pw);
 };
 
 #endif // CRYPTOSTORAGE_H

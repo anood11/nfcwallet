@@ -1,5 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import QtFeedback 5.0
+import QtSystemInfo 5.0
 import "pages"
 ApplicationWindow
 {
@@ -36,6 +38,30 @@ ApplicationWindow
         running: false
         interval: 30000
         onTriggered: pageStack.pop()
+    }
+
+    HapticsEffect {
+        id: vib
+        attackIntensity: 0.0
+        attackTime: 100
+        intensity: 1.0
+        duration: 100
+        fadeTime: 100
+        fadeIntensity: 0.0
+    }
+
+    DeviceInfo
+    {
+        id: sinfo
+        function getIMEI()
+        {
+            var imei = sinfo.imei(0);
+            if (imei.length == 0)
+            {
+                imei = "012345678912345"
+            }
+            return imei;
+        }
     }
 
     Rectangle

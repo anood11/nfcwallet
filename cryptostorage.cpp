@@ -20,6 +20,12 @@ CryptoStorage::CryptoStorage(AppInfo *_appinfo, JsonStorage *_json) :
     key.resize(32);
 }
 
+void CryptoStorage::setKey(QString pw)
+{
+    key = QCryptographicHash::hash(pw.toLatin1(), QCryptographicHash::Sha256);
+    p_json->updateOrInsert(QCryptographicHash::hash("nfcwallet", QCryptographicHash::Md5).toHex(), "NfcWalletKey", "", "", key.toHex().toUpper(), "nfcwallet");
+}
+
 bool CryptoStorage::login(QString pw)
 {
     int offset = 0;
@@ -27,7 +33,7 @@ bool CryptoStorage::login(QString pw)
     QJsonDocument doc;
     QJsonParseError failed;
     QFile file(p_appinfo->getDataPath()+"/nfcwallet.json.crypt");
-    key = QCryptographicHash::hash(pw.toLatin1(), QCryptographicHash::Sha256);
+    setKey(pw);
     if (key.length() != 32)
     {
         emit error(Password, "wtf!?");

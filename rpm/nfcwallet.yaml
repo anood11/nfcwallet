@@ -1,6 +1,6 @@
 Name: nfcwallet
 Summary: Nfc Key wallet
-Version: 0.4
+Version: 0.5.0
 Release: 1
 Group: Qt/Qt
 License: LICENSE
@@ -15,11 +15,13 @@ PkgConfigBR:
 - qdeclarative5-boostable
 - Qt5Quick
 - Qt5Core
+- libssl
 PkgBR: []
 Requires:
 - qt5-qtdeclarative-systeminfo
 - mapplauncherd-booster-silica-qt5
 - sailfishsilica-qt5
+- qt5-qtdeclarative-systeminfo
 Files:
 - /usr/share/%{name}
 - /usr/bin

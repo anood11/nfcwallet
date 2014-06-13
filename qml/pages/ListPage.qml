@@ -7,14 +7,20 @@ Page {
 
     function edit(_md5, _title, _url, _login, _password, _category)
     {
-        md5id = _md5
-        title = _title
-        url = _url
-        user = _login
-        password = _password
-        category = _category
-        categoryIndex = Remote.get_index_from_category(category)
-        pageStack.push(Qt.resolvedUrl("EditPage.qml"))
+        if (_title == "NfcWalletKey") // specialcase...
+        {
+            pageStack.push(Qt.resolvedUrl("EditKey.qml"))
+        }
+        else {
+            md5id = _md5
+            title = _title
+            url = _url
+            user = _login
+            password = _password
+            category = _category
+            categoryIndex = Remote.get_index_from_category(category)
+            pageStack.push(Qt.resolvedUrl("EditPage.qml"))
+        }
     }
     Component.onCompleted: { Remote.get_categorys(); Remote.get_items(); }
 
