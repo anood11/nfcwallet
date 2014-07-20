@@ -10,6 +10,9 @@ Description: |
   Stores your password safe on your phone and sync to your cloud.
 Configure: none
 Builder: qtc5
+QMakeOptions:
+    - VERSION='%{version}'
+
 PkgConfigBR:
 - Qt5Qml
 - qdeclarative5-boostable

@@ -4,6 +4,7 @@ TARGET = nfcwallet
 QT+=network quick qml
 CONFIG += link_pkgconfig sailfishapp qt5-qtdeclarative-systeminfo qt5-qtsystem
 PKGCONFIG += sailfishapp
+DEFINES+=VERSION=\\\"$$VERSION\\\"
 # C++ sources
 SOURCES += main.cpp \
     nfckeywallet.cpp \

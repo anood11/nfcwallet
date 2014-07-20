@@ -19,7 +19,7 @@ Page {
         }
         Label {
             font.pixelSize: Theme.fontSizeMedium
-            text: appinfo.getAppName()+" v"+appinfo.getVersion()
+            text: appinfo.getName()+" v"+appinfo.getVersion()
             anchors.horizontalCenter: parent.horizontalCenter
 
         }
