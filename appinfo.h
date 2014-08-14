@@ -21,8 +21,8 @@ class AppInfo : public QObject
     QString config_path;
     QString data_path;
     QString install_path;
-    QString app_name;
-    QString app_fullname;
+    QString app_name;   // harbour- removed
+    QString app_fullname; // harbour-foo
 public:
     explicit AppInfo(QCoreApplication *app_path);
 signals:

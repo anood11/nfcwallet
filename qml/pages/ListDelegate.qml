@@ -5,7 +5,7 @@ ListItem {
     anchors.left: parent.left
     anchors.right: parent.right
     contentHeight: Theme.itemSizeSmall
-    onClicked: { console.log("index"+model.index); selected = (selected == model.index ? -1 : model.index); }
+    onClicked: { selected = (selected == model.index ? -1 : model.index); watchdog.restart(); }
     onPressAndHold: edit(model.md5id, model.title, model.url, model.login, model.password, model.category)
     Label {
         id: labelTitle
@@ -13,7 +13,7 @@ ListItem {
         anchors.right: parent.right
         anchors.leftMargin: Theme.paddingMedium
         anchors.rightMargin: Theme.paddingMedium
-        font.pixelSize: Theme.fontSizeLarge
+        font.pixelSize: Theme.fontSizeMedium
         color: index == selected ? Theme.highlightColor : Theme.primaryColor
         text: model.title
     }

@@ -1,8 +1,8 @@
 # The name of your app
-TARGET = nfcwallet
+TARGET = harbour-nfcwallet
 
-QT+=network quick qml
-CONFIG += link_pkgconfig sailfishapp qt5-qtdeclarative-systeminfo qt5-qtsystem
+QT+=network quick qml dbus
+CONFIG += link_pkgconfig sailfishapp
 PKGCONFIG += sailfishapp
 DEFINES+=VERSION=\\\"$$VERSION\\\"
 # C++ sources
@@ -13,7 +13,9 @@ SOURCES += main.cpp \
     jsonstorage.cpp \
     cryptostorage.cpp \
     libcrypto/aes/aes_core.c \
-    appinfo.cpp
+    appinfo.cpp \
+    libcrypto/aes/aes_ecb.c \
+    systeminfohack.cpp
 
 # C++ headers
 HEADERS += \
@@ -24,7 +26,9 @@ HEADERS += \
     cryptostorage.h \
     libcrypto/aes/aes.h \
     appinfo.h \
-    gen_config.h
+    gen_config.h \
+    libcrypto/aes/aes_locl.h \
+    systeminfohack.h
 
 # QML files and folders
 #qml.files = *.qml *.js scripts pages cover main.qml
@@ -36,7 +40,6 @@ desktop.files = nfcwallet.desktop
 
 
 OTHER_FILES = \
-    images/nfckeyring.png \
     scripts/key_wallet.js \
     qml/nfckeywallet.qml \
     qml/pages/PGPWait.qml \
@@ -51,12 +54,16 @@ OTHER_FILES = \
     qml/pages/ListDelegate.qml \
     qml/pages/CategoryPage.qml \
     qml/pages/MyButton.qml \
-    rpm/nfcwallet.yaml \
-    nfcwallet.desktop \
+    rpm/harbour-nfcwallet.yaml \
+    harbour-nfcwallet.desktop \
     qml/pages/NumPad.qml \
-    qml/pages/EditKey.qml
+    qml/pages/EditKey.qml \
+    images/nfckeywallet.png
 
 RESOURCES += \
     qrc.qrc
 
 
+docs.path=/usr/share/${TARGET}
+docs.files=ChangeLog.txt LICENSE.txt
+INSTALLS += docs

@@ -7,10 +7,11 @@ Page {
     function do_login(pw)
     {
         var imei = sinfo.getIMEI()
+        var serial = sinfo.getTOHID()
+        console.log("mat "+serial)
         if (crypto.login(imei+pw))
         {
             vib.start()
-            watchdog.start()
             pageStack.push(Qt.resolvedUrl("ListPage.qml"))
         }
     }
@@ -40,6 +41,7 @@ Page {
         // of the page, followed by our content.
         NumPad { onLogin: do_login(code); }
     }
+
 }
 
 

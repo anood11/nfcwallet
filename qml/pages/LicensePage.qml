@@ -3,12 +3,15 @@ import Sailfish.Silica 1.0
 Page
 {
     anchors.fill: parent
+    PageHeader {
+        title: qsTr("License")
+    }
 
     TextArea
     {
         anchors.fill: parent
-        anchors.topMargin: Theme.paddingLarge * 3
-        text: "FIXME: read license file and show it here"
+        anchors.topMargin: Theme.paddingLarge * 4
+        text: appinfo.getLicenseText()
         readOnly: true
     }
 }

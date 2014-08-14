@@ -6,7 +6,6 @@ Dialog
     id: page
     anchors.fill: parent
     onAccepted: {
-        console.log(numpad.code)
         crypto.setKey( sinfo.getIMEI()+numpad.code);
         crypto.save()
         Remote.get_items()

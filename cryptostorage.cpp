@@ -23,7 +23,7 @@ CryptoStorage::CryptoStorage(AppInfo *_appinfo, JsonStorage *_json) :
 void CryptoStorage::setKey(QString pw)
 {
     key = QCryptographicHash::hash(pw.toLatin1(), QCryptographicHash::Sha256);
-    p_json->updateOrInsert(QCryptographicHash::hash("nfcwallet", QCryptographicHash::Md5).toHex(), "NfcWalletKey", "", "", key.toHex().toUpper(), "nfcwallet");
+    p_json->updateOrInsert(QCryptographicHash::hash("nfcwallet", QCryptographicHash::Md5).toHex(), "NfcWallet", "", "", key.toHex().toUpper(), "nfcwallet");
 }
 
 bool CryptoStorage::login(QString pw)
@@ -36,45 +36,39 @@ bool CryptoStorage::login(QString pw)
     setKey(pw);
     if (key.length() != 32)
     {
-        emit error(Password, "wtf!?");
+        emit error(Password, tr("key length error!?"));
         return false;
     }
 
     if (!file.open(QIODevice::ReadOnly))
     {
-        p_json->updateOrInsert(QCryptographicHash::hash("nfcwallet", QCryptographicHash::Md5).toHex(), "NfcWalletKey", "", "", key.toHex().toUpper(), "nfcwallet");
+        p_json->updateOrInsert(QCryptographicHash::hash("nfcwallet", QCryptographicHash::Md5).toHex(), "NfcWallet", "", "", key.toHex().toUpper(), "nfcwallet");
         return true;
     }
 
     QByteArray bytes = file.readAll();
     cryptated.resize(bytes.length()+1);
-    qDebug() << "data " << bytes.toHex() << " dlenght " << bytes.length();
+   // qDebug() << "data " << bytes.toHex() << " dlenght " << bytes.length();
 
     private_AES_set_decrypt_key((uint8_t*)key.data(), 256, &skey);
-
     while (bytes.length())
     {
-        qDebug() << bytes.length();
         AES_decrypt((uint8_t*)bytes.data(),(uint8_t*) &cryptated.data()[offset], &skey);
         bytes.remove(0, 16);
         offset += 16;
     };
 
-
-    qDebug() << "dec" << cryptated;
     doc = QJsonDocument::fromJson(cryptated, &failed);
     if (doc.array().empty() && failed.error != QJsonParseError::NoError)
     {
-        emit error(Password, "Login failed");
+        emit error(Password, tr("Login failed"));
         return false;
     }
 
     p_json->setItemArray(doc.array());
 
     cryptated.clear();
-    qDebug("loaded?");
     qDebug() << doc.toJson();
-    qDebug("loadeddo");
 
     return true;
 }
@@ -88,7 +82,7 @@ void CryptoStorage::save()
     if (key.length() != 32)
     {
         qDebug() << key.toHex();
-        emit error(-1, "WTF? key corrupt?");
+        emit error(-1, tr("Key length is corrupt?"));
         return ;
     }
     private_AES_set_encrypt_key((uint8_t*)key.data(), 256, &skey);

@@ -51,8 +51,11 @@ Page {
         header: PageHeader { title: "Nfc Wallet" }
         section {
             property: 'category'
-            delegate: SectionHeader {
+            delegate: Label {
                 text: section
+                color: Theme.highlightColor
+                font.pixelSize: Theme.fontSizeMedium
+                anchors.horizontalCenter: parent.horizontalCenter
             }
         }
 
@@ -73,4 +76,10 @@ Page {
 
         VerticalScrollDecorator {}
     }
+    onStatusChanged:
+    {
+        if (status === PageStatus.Active)
+            watchdog.restart();
+    }
+
 }

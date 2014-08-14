@@ -65,7 +65,7 @@ Column {
         id: entry
         //anchors.top: parent.top
         width: parent.width
-        font.pixelSize: Theme.fontSizeExtraLarge
+        font.pixelSize: Theme.fontSizeExtraLarge+Theme.fontSizeMedium
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         readOnly: true
@@ -98,8 +98,8 @@ Column {
             width: 128
             height: 100
             icon.source: "image://theme/icon-l-cancel"
-            icon.width: 64
-            icon.height: 64
+            icon.width: 86
+            icon.height: 86
             onClicked: {vib.start(); code = "" }
         }
         MyButton{
@@ -111,8 +111,8 @@ Column {
             width: 128
             height: 100
             icon.source: "image://theme/icon-m-next"
-            icon.width: 64
-            icon.height: 64
+            icon.width: 86
+            icon.height: 86
             onClicked: { numpad.login(code); code = ""; }
         }
     }

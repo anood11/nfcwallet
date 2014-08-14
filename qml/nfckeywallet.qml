@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import QtFeedback 5.0
-import QtSystemInfo 5.0
+import QtMultimedia 5.0
+//import QtFeedback 5.0
 import "pages"
 ApplicationWindow
 {
@@ -24,6 +24,10 @@ ApplicationWindow
 
     onSelectedChanged: watchdog.restart()
 
+    SoundEffect {
+        id: audio
+        source: "/usr/share/sounds/jolla-ambient/stereo/general_warning.wav"
+    }
     ListModel {
         id: modelItems
     }
@@ -36,53 +40,47 @@ ApplicationWindow
         id: watchdog
         repeat: false
         running: false
-        interval: 30000
+        interval: 60000
         onTriggered: pageStack.pop()
     }
 
-    HapticsEffect {
+    QtObject {
         id: vib
-        attackIntensity: 0.0
-        attackTime: 100
-        intensity: 1.0
-        duration: 100
-        fadeTime: 100
-        fadeIntensity: 0.0
-    }
-
-    DeviceInfo
-    {
-        id: sinfo
-        function getIMEI()
+        // "hack" until harbour allow HapticEffect
+        function start()
         {
-            var imei = sinfo.imei(0);
-            if (imei.length == 0)
-            {
-                imei = "012345678912345"
-            }
-            return imei;
+            // do  nothing...
         }
     }
-
+    /*
+        HapticsEffect {
+            id: vib
+            attackIntensity: 0.0
+            attackTime: 100
+            intensity: 1.0
+            duration: 100
+            fadeTime: 100
+            fadeIntensity: 0.0
+        }
+    */
     Rectangle
     {
         id: errorDialog
-        visible: errorMsg != ""
         anchors.centerIn: parent
         border.width: 1
-        opacity: 0.7
-        width: 400
-        height: 400
+        visible: errorMsg != ""// ? 1.0 : 0.0
+        width: 0
+        height: 0
         scale: 1
         z: 1
-        Text{
-            anchors.fill: parent
+        color: Theme.secondaryHighlightColor
+        Label{
             font.pixelSize: Theme.fontSizeLarge
-            color: Theme.primaryColor
             text: errorMsg
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
             wrapMode: Text.WordWrap
+           // height: parent.height
         }
         MouseArea
         {
@@ -95,17 +93,19 @@ ApplicationWindow
 
         states: State {
             name: "active"; when: errorDialog.visible
-            PropertyChanges { target: scaleTransform; xScale: 1; yScale: 1;}
+            PropertyChanges { target: errorDialog; height: 200;}
+            PropertyChanges { target: errorDialog; width: 400;}
         }
         transitions: Transition {
-            NumberAnimation { property: "xScale"; duration: 1000 }
+            NumberAnimation { property: "height"; duration: 200; }
+            NumberAnimation { property: "width"; duration: 100; }
         }
     }
 
     Connections
     {
         target: crypto
-        onError: errorMsg = message
+        onError: { audio.play(); errorMsg = message; }
     }
 
     initialPage: pageStack.push(Qt.resolvedUrl("pages/FirstPage.qml"))

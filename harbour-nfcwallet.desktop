@@ -2,8 +2,8 @@
 X-Nemo-Application-Type=silica-qt5
 Type=Application
 Name=Nfc Wallet
-Icon=nfcwallet
-Exec=nfcwallet
+Icon=harbour-nfcwallet
+Exec=harbour-nfcwallet
 X-Desktop-File-Install-Version=0.20
 
 

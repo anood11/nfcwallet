@@ -9,13 +9,14 @@
 #include "appinfo.h"
 #include "cryptostorage.h"
 #include "jsonstorage.h"
+#include "systeminfohack.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
     int exitcode;
 
     QGuiApplication *app = SailfishApp::application(argc, argv);
-    QGuiApplication::setOrganizationName("7b4");
+//    QGuiApplication::setOrganizationName("7b4");
 
     app->setQuitOnLastWindowClosed(true);
     AppInfo appinfo(app);
@@ -26,11 +27,13 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QQuickView *view = SailfishApp::createView();
     JsonStorage *json  = new JsonStorage();
     CryptoStorage *crypto = new CryptoStorage(&appinfo, json);
+    SystemInfoHack *sinfo = new SystemInfoHack(&appinfo);
 
+    view->rootContext()->setContextProperty("appinfo", &appinfo);
+    view->rootContext()->setContextProperty("sinfo", sinfo);
     view->rootContext()->setContextProperty("nfc", &nfc);
     view->rootContext()->setContextProperty("storage", json);
     view->rootContext()->setContextProperty("crypto", crypto);
-    view->rootContext()->setContextProperty("appinfo", &appinfo);
     view->setSource(SailfishApp::pathTo("/qml/nfckeywallet.qml"));
     view->showFullScreen();
 
@@ -50,6 +53,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     delete view;
     delete json;
     delete app;
+    delete sinfo;
     return exitcode;
 }
 

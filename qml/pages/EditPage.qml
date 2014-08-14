@@ -19,7 +19,6 @@ Dialog {
         password = ""
     }
     onAccepted: {
-        watchdog.restart();
         if (md5id == "")
         {
             md5id = Qt.md5(fieldTitle.text)
@@ -41,7 +40,7 @@ Dialog {
         Remote.get_categorys()
     }
 
-    onRejected: {reset_fields(); watchdog.restart() }
+    onRejected: {reset_fields();  }
 
     Component.onCompleted: watchdog.stop()
 
