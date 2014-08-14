@@ -26,12 +26,7 @@ QString SystemInfoHack::getIMEI()
 QString SystemInfoHack::getTOHID()
 {
     QDBusInterface iface("com.jolla.tohd", "/com/jolla/tohd", "org.freedesktop.DBus.Properties",  QDBusConnection::systemBus());
-    qDebug() << iface.isValid();
-    qDebug() << iface.lastError();
     QDBusReply<QString> reply = iface.call("Get", "com.jolla.tohd", "TOHID");
-//    qDebug () << reply.isValid();
-//    qDebug() << iface.isValid();
-//    qDebug() << iface.lastError();
     return reply;
 }
 #else
